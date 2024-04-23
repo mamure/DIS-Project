@@ -8,3 +8,6 @@
 * Should interact with the database via SQL (INSERT/UPDATE/DELETE/SELECT statements)
 * [NEW] Should perform regular expression matching or context free grammar parsing
 * Bonus points for use of views, triggers, stored procedures, but not required
+
+# How to compile web-app
+# Tutorial on web-app
