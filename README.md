@@ -10,4 +10,8 @@
 * Bonus points for use of views, triggers, stored procedures, but not required
 
 # How to compile web-app
+## Requirements
+Run the code below in your terminal to install the necessary modules to compile the web-app.
+
+>$ pip install -r requirements.txt
 # Tutorial on web-app
