@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess Database</title>
-    <link rel="stylesheet" href="style/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Upload chess game to The Chess Database</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file">
+    <form id="file-upload" action="/upload" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="MAX_FILE_SIZE" value="4194304" /> 
+        <input type="file" name="upload_file">
+        <br>
         <button type="submit">Upload PGN</button>
     </form>
+    <p>Currently we are only supporting link uploads from <a href="pgnmentor.com">pgnmentor.com</a></p>
     <br>
     <footer>
         <p>Created by: jlw218, hnb825, rzd350</p>
