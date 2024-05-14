@@ -1,4 +1,6 @@
 import psycopg2
+from flask import Flask, render_template
+from bs4 import BeautifulSoup
 
 def create_database():
     conn = None
@@ -37,24 +39,7 @@ def create_table():
         conn.autocommit = True
         cur = conn.cursor()
         cur.execute("""
-            CREATE TABLE IF NOT EXISTS events (
-                id SERIAL PRIMARY KEY,
-                event_name VARCHAR(100),
-                site VARCHAR(100),
-                event_date DATE,
-                round VARCHAR(10),
-                white_player VARCHAR(100),
-                black_player VARCHAR(100),
-                result VARCHAR(10),
-                white_elo INTEGER,
-                black_elo INTEGER,
-                black_fide_id VARCHAR(20),
-                white_fide_id VARCHAR(20),
-                opening VARCHAR(100),
-                variation VARCHAR(100),
-                eco VARCHAR(10),
-                moves TEXT
-            )
+            -- Typeholder
         """)
         print("Table 'events' created successfully")
 
