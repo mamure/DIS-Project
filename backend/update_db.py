@@ -1,6 +1,6 @@
 import psycopg2
 
-def update_database(events):
+def update_database(data):
     conn = None
     try:
         conn = psycopg2.connect(
@@ -11,26 +11,26 @@ def update_database(events):
 
         # Create a cursor object
         cur = conn.cursor()
-        for event in events:
+        for entry in data:
             cur.execute("""
                 INSERT INTO events (event_name, site, event_date, round, white_player, black_player, result, white_elo, black_elo, black_fide_id, white_fide_id, opening, variation, eco, moves)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (
-                event['Event'],
-                event['Site'],
-                event['Date'],
-                event['Round'],
-                event['White'],
-                event['Black'],
-                event['Result'],
-                event['WhiteElo'],
-                event['BlackElo'],
-                event['BlackFideId'],
-                event['WhiteFideId'],
-                event['Opening'],
-                event['Variation'],
-                event['ECO'],
-                ','.join(str(move) for move in event['Moves'])  # Convert moves list to string
+                entry['Event'],
+                entry['Site'],
+                entry['Date'],
+                entry['Round'],
+                entry['White'],
+                entry['Black'],
+                entry['Result'],
+                entry['WhiteElo'],
+                entry['BlackElo'],
+                entry['BlackFideId'],
+                entry['WhiteFideId'],
+                entry['Opening'],
+                entry['Variation'],
+                entry['ECO'],
+                ','.join(str(move) for move in entry['Moves'])  # Convert moves list to string
             ))
         conn.commit()
         print("Records inserted successfully")

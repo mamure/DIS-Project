@@ -81,3 +81,11 @@ CREATE TABLE IF NOT EXISTS game_played_at (
     FOREIGN KEY (game_id) REFERENCES game(game_id),
     FOREIGN KEY (event_name) REFERENCES event(event_name)
 );
+
+CREATE TABLE if NOT EXISTS opening_moves (
+    move_id SERIAL
+    opening_name VARCHAR(255)
+    PRIMARY KEY (move_id, opening_name)
+    FOREIGN KEY (move_id) REFERENCES move(move_id)
+    FOREIGN KEY (opening_name) REFERENCES opening(opening_name)
+);

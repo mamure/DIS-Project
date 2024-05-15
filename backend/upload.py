@@ -5,6 +5,7 @@ import os
 import chess.pgn
 import io
 from bs4 import BeautifulSoup
+from update_db import update_database
 
 app = Flask(__name__, template_folder='web/templates')
 
@@ -106,9 +107,6 @@ def extract_game_data(game):
         'ECO': game.headers.get('ECO', 'No data'),
         'Moves': list(game.mainline_moves()),
     }
-
-def update_database(data):
-    pass
 
 if __name__ == '__main__':
     app.run(debug=True)
