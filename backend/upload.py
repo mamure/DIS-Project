@@ -7,7 +7,7 @@ import io
 from bs4 import BeautifulSoup
 from update_db import update_database
 
-app = Flask(__name__, template_folder='web/templates')
+app = Flask(__name__, template_folder='DIS-Project/web/templates')
 
 @app.route('/')
 def upload_form():

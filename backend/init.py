@@ -1,14 +1,15 @@
 import psycopg2
 from flask import Flask, render_template
 from bs4 import BeautifulSoup
+from pathlib import Path
 
-app = Flask(__name__, template_folder='web/templates')
+app = Flask(__name__, template_folder='DIS-Project/web/templates')
 
 def create_database():
     conn = None
     try:
         conn = psycopg2.connect(
-            dbname="postgres",
+            dbname="chess_db",
             host="localhost",
             port="5432"
         )
@@ -43,10 +44,9 @@ def create_table():
         )
         conn.autocommit = True
         cur = conn.cursor()
-        cur.execute("""
-            -- Typeholder
-        """)
-        print("Table 'events' created successfully")
+        initFile = Path(__file__).parent.joinpath("init.sql")
+        cur.execute(initFile.open("r").read())
+        print("Tables created successfully")
 
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error while connecting to PostgreSQL:", error)
@@ -58,6 +58,7 @@ def create_table():
 
 @app.route('/')
 def index():
+    print(app.template_folder)
     return render_template('index.html')
 
 if __name__ == "__main__":
