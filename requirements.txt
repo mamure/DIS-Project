@@ -1,5 +1,6 @@
 chess # chess library for Python
 psycopg2-binary # Psycopg is a PostgreSQL adapter for the Python programming language
 flask
-BeautifulSoup
+beautifulsoup4
 requests
+python-dotenv

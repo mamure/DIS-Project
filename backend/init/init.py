@@ -1,15 +1,22 @@
 import psycopg2
 from flask import Flask, render_template
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
-app = Flask(__name__, template_folder='DIS-Project/web/templates')
+load_dotenv()
+
+app = Flask(__name__, template_folder=Path(__file__).parent.parent.joinpath("web/templates"))
 
 def create_database():
     conn = None
     try:
         conn = psycopg2.connect(
             host="localhost",
-            port="5432"
+            port="5432",
+            database="postgres",
+            user=os.getenv("PG_USERNAME"),
+            password=os.getenv("PG_PASSWORD"),
         )
         conn.autocommit = True
         cur = conn.cursor()
@@ -31,7 +38,9 @@ def create_table():
         conn = psycopg2.connect(
             dbname="chess_db",
             host="localhost",
-            port="5432"
+            port="5432",
+            user=os.getenv("PG_USERNAME"),
+            password=os.getenv("PG_PASSWORD"),
         )
         conn.autocommit = True
         cur = conn.cursor()
@@ -49,7 +58,7 @@ def create_table():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
 
 if __name__ == "__main__":
     create_database()
