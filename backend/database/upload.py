@@ -5,7 +5,7 @@ import os
 import chess.pgn
 import io
 from bs4 import BeautifulSoup
-from update_db import update_database
+from backend.database.update_db import update_database
 
 app = Flask(__name__, template_folder='DIS-Project/web/templates')
 
@@ -14,7 +14,7 @@ def upload_form():
     return render_template('upload.html')
 
 @app.route('/upload', methods=['POST'])
-def upload_file():
+def handle_upload():
     uploaded_file = request.files.get('upload_file')
     upload_url = request.form.get('upload_url')
     
@@ -27,8 +27,7 @@ def upload_file():
             filename = secure_filename(uploaded_file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             uploaded_file.save(file_path)
-            data = parse_pgn_file(file_path)
-            update_database(data)
+            parse_pgn_file(file_path)
             return 'Database updated successfully.'
         except Exception as e:
             print(f'An error occurred during update: {e}')
@@ -38,8 +37,7 @@ def upload_file():
         if not upload_url.startswith('https://www.pgnmentor.com/'):
             return 'Invalid URL.'
         try:
-            data = parse_pgn_url(upload_url)
-            update_database(data)
+            parse_pgn_url(upload_url)
             return 'Database updated successfully.'
         except Exception as e:
             print(f'An error occurred during update: {e}')
@@ -66,14 +64,13 @@ def parse_pgn_file(file_path):
         print(f"Error reading file '{file_path}'.")
     except Exception as e:
         print(f"An error occurred: {e}")
-    return games
+    update_database(games)
 
 def parse_pgn_url(url):
     try:
         response = requests.get(url)
         response.raise_for_status()
-        soup = BeautifulSoup(response.text, 'html.parser')
-        pgn_content = soup.find('pre').text.strip()
+        pgn_content = response.text.strip()
         
         pgn_io = io.StringIO(pgn_content)
         games = []
@@ -83,7 +80,7 @@ def parse_pgn_url(url):
                 break
             game_data = extract_game_data(game)
             games.append(game_data)
-        return games
+        update_database(games)
     except requests.RequestException as e:
         raise ValueError(f"Error fetching PGN from URL: {e}")
     except Exception as e:

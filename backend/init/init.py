@@ -3,6 +3,10 @@ from flask import Flask, render_template
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+from initParse import main
+import sys
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+from backend.database.upload import parse_pgn_url
 
 load_dotenv()
 
@@ -55,6 +59,11 @@ def create_table():
             cur.close()
             conn.close()
             print("PostgreSQL connection is closed")
+            
+def initDataUpload(data):
+    for file in data:
+        link = f"https://www.pgnmentor.com/{file}"
+        parse_pgn_url(link)
 
 @app.route('/')
 def index():
@@ -63,4 +72,6 @@ def index():
 if __name__ == "__main__":
     create_database()
     create_table()
+    initLinks = main()
+    initDataUpload(initLinks)
     app.run(debug=True)

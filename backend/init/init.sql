@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS game CASCADE;
 CREATE TABLE game (
     game_id SERIAL PRIMARY KEY,
     result VARCHAR(7),
-    game_date DATE,
+    game_date TEXT,
     eco CHAR(3)
 );
 
@@ -17,7 +17,7 @@ CREATE TABLE player (
 DROP TABLE IF EXISTS event CASCADE;
 CREATE TABLE event (
     event_name VARCHAR(255) PRIMARY KEY,
-    event_date DATE,
+    event_date TEXT,
     site VARCHAR(255)
 );
 

@@ -3,10 +3,10 @@ import random
 from bs4 import BeautifulSoup
 
 def extract_links(html):
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = BeautifulSoup(html, "html.parser")
     links = []
-    for link in soup.find_all('a'):
-        href = link.get('href')
+    for link in soup.find_all("a"):
+        href = link.get("href")
         if href:
             links.append(href)
     return links
@@ -14,7 +14,7 @@ def extract_links(html):
 def filter_file_links(links):
     file_links = []
     for link in links:
-        if link.endswith('.pgn'):
+        if link.endswith(".pgn"):
             file_links.append(link)
     return file_links
     
@@ -26,7 +26,7 @@ def main():
         links = extract_links(response.content)
         file_links = filter_file_links(links)
         random_file_links = random.sample(file_links, 50)
-        print(random_file_links)
+        return random_file_links
     else:
         print("Error collecting links")
         
