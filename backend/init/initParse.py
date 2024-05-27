@@ -14,7 +14,7 @@ def extract_links(html):
 def filter_file_links(links):
     file_links = []
     for link in links:
-        if link.endswith('.pgn'):  # Change the file extension as per your requirement
+        if link.endswith('.pgn'):
             file_links.append(link)
     return file_links
     
