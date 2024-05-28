@@ -10,7 +10,7 @@ from backend.database.upload import parse_pgn_url
 
 load_dotenv()
 
-app = Flask(__name__, template_folder=Path(__file__).parent.parent.joinpath("web/templates"))
+app = Flask(__name__, template_folder=Path(__file__).parent.parent.parent.joinpath("web/templates"), static_folder=Path(__file__).parent.parent.parent.joinpath("web/static"))
 
 def create_database():
     conn = None

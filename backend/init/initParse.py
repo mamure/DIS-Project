@@ -25,7 +25,7 @@ def main():
     if response.status_code == 200:
         links = extract_links(response.content)
         file_links = filter_file_links(links)
-        random_file_links = random.sample(file_links, 50)
+        random_file_links = random.sample(file_links, 2)
         return random_file_links
     else:
         print("Error collecting links")
