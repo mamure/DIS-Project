@@ -9,8 +9,8 @@ CREATE TABLE game (
 DROP TABLE IF EXISTS player CASCADE;
 CREATE TABLE player (
     player_name VARCHAR(255) PRIMARY KEY,
-    title VARCHAR(255),
     elo INT,
+    title VARCHAR(255),
     fide_id INT
 );
 
