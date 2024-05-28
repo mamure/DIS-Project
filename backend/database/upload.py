@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import request, render_template
 from werkzeug.utils import secure_filename
 import requests
 import os
@@ -6,10 +6,9 @@ import chess.pgn
 import io
 from bs4 import BeautifulSoup
 from backend.database.update_db import update_database
+from backend.app import app
 
-app = Flask(__name__, template_folder="DIS-Project/web/templates")
-
-@app.route("/")
+@app.route('/upload')
 def upload_form():
     return render_template("upload.html")
 

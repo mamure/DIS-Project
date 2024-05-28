@@ -7,10 +7,9 @@ from initParse import main
 import sys
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 from backend.database.upload import parse_pgn_url
+from backend.app import app
 
 load_dotenv()
-
-app = Flask(__name__, template_folder=Path(__file__).parent.parent.parent.joinpath("web/templates"), static_folder=Path(__file__).parent.parent.parent.joinpath("web/static"))
 
 def create_database():
     conn = None
