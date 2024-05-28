@@ -1,4 +1,4 @@
-from flask import request, render_template
+from flask import Blueprint, request, render_template
 from werkzeug.utils import secure_filename
 import requests
 import os
@@ -6,13 +6,14 @@ import chess.pgn
 import io
 from bs4 import BeautifulSoup
 from backend.database.update_db import update_database
-from backend.app import app
 
-@app.route('/upload')
+Upload = Blueprint("upload", __name__)
+
+@Upload.route('/upload')
 def upload_form():
     return render_template("upload.html")
 
-@app.route("/upload", methods=["POST"])
+@Upload.route("/upload", methods=["POST"])
 def handle_upload():
     uploaded_file = request.files.get("upload_file")
     upload_url = request.form.get("upload_url")
@@ -24,7 +25,7 @@ def handle_upload():
             return "Invalid file format. Please upload a PGN file."
         try:
             filename = secure_filename(uploaded_file.filename)
-            file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            file_path = os.path.join(Upload.config["UPLOAD_FOLDER"], filename)
             uploaded_file.save(file_path)
             parse_pgn_file(file_path)
             return "Database updated successfully."
@@ -106,6 +107,3 @@ def extract_game_data(game):
         "ECO": game.headers.get("ECO", "No data"),
         "Moves": moves,
     }
-
-if __name__ == "__main__":
-    app.run(debug=True)
