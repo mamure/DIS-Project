@@ -9,10 +9,10 @@
 <body>
     <nav>
         <ul>
-            <li><a >Home</a></li>
-            <li><a >Database</a></li>
-            <li><a >Upload</a></li>
-            <li><a >About</a></li>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('database') }}">Database</a></li>
+            <li><a href="{{ url_for('upload_form') }}">Upload</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
         </ul>
     </nav>
     <div class="container">

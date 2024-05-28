@@ -15,12 +15,29 @@
             <li><a href="{{ url_for('about') }}">About</a></li>
         </ul>
     </nav>
-    <h1>Upload chess game to The Chess Database</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <button type="submit">Upload PGN</button>
-    </form>
-    <br>
+    
+    <div class="container">
+        <h1>Database</h1>
+        
+        <table>
+            <caption>Chess Game Records</caption>
+            <thead>
+                <tr>
+                    <th>Test 1</th>
+                    <th>Test 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
     <footer>
         <p>Created by: jlw218, hnb825, rzd350</p>
     </footer>
