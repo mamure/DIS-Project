@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('database') }}">Database</a></li>
+            <li><a href="{{ url_for('upload_form') }}">Upload</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+        </ul>
+    </nav>
     <h1>Upload chess game to The Chess Database</h1>
     <form id="file-upload" action="/upload" method="post" enctype="multipart/form-data">
         <input type="hidden" name="MAX_FILE_SIZE" value="4194304" /> 
