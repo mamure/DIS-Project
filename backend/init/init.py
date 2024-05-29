@@ -1,18 +1,13 @@
 import psycopg2
-from flask import Flask, render_template
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-from initParse import main
-import sys
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+from backend.init.initParse import main as init_parse_main
 from backend.database.upload import parse_pgn_url
-from backend.app import app
 
 load_dotenv()
 
 def create_database():
-    conn = None
     try:
         conn = psycopg2.connect(
             host="localhost",
@@ -50,7 +45,6 @@ def create_table():
         initFile = Path(__file__).parent.joinpath("init.sql")
         cur.execute(initFile.open("r").read())
         print("Tables created successfully")
-
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error while connecting to PostgreSQL:", error)
     finally:
@@ -64,13 +58,9 @@ def initDataUpload(data):
         link = f"https://www.pgnmentor.com/{file}"
         parse_pgn_url(link)
 
-@app.route('/')
-def index():
-    return render_template("index.html")
 
-if __name__ == "__main__":
+def init_db():
     create_database()
     create_table()
-    initLinks = main()
+    initLinks = init_parse_main()
     initDataUpload(initLinks)
-    app.run(debug=True)

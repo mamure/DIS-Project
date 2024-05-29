@@ -5,18 +5,9 @@
             "server": "localhost",
             "port": 5432,
             "driver": "PostgreSQL",
-            "name": "PostgreSQL 16",
-            "database": "postgres",
-            "username": "martinreich1"
-        },
-        {
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 5432,
-            "driver": "PostgreSQL",
-            "name": "PostgreSQL",
+            "name": "chess_db",
             "database": "chess_db",
-            "username": "martinreich1"
+            "username": "postgres"
         }
     ]
 }
