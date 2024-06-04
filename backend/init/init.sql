@@ -43,6 +43,7 @@ CREATE TABLE move (
 DROP TABLE IF EXISTS game_moves CASCADE;
 CREATE TABLE game_moves (
     move_id SERIAL,
+    move_num SMALLINT,
     game_id SERIAL,
     PRIMARY KEY (move_id, game_id),
     FOREIGN KEY (move_id) REFERENCES move(move_id),
