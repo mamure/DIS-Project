@@ -15,6 +15,28 @@ def search_games():
     print(f"Searching for {query}")
     res = {}
     cur = conn.cursor()
+    cur.execute(
+        """
+        SELECT
+        to_jsonb(game) ||
+        jsonb_build_object(
+            'black_player', jsonb_agg(to_jsonb(black_player)),
+            'event', jsonb_agg(to_jsonb(event)),
+            'game_moves', jsonb_agg(to_jsonb(game_moves)),
+            'game_opening', jsonb_agg(to_jsonb(game_opening)),
+            'game_played_at', jsonb_agg(to_jsonb(game_played_at)),
+            'move', jsonb_agg(to_jsonb(move)),
+            'opening', jsonb_agg(to_jsonb(opening)),
+            'opening_moves', jsonb_agg(to_jsonb(opening_moves)),
+            'opening_variation', jsonb_agg(to_jsonb(opening_variation)),
+            'player', jsonb_agg(to_jsonb(player)),
+            'variation', jsonb_agg(to_jsonb(variation)),
+            'white_player', jsonb_agg(to_jsonb(white_player))
+        )
+        FROM game
+        """
+    )
+    
     for table in ["black_player","event","game","game_moves","game_opening","game_played_at","move","opening","opening_moves","opening_variation","player","variation","white_player"]:
         cur.execute(f"select * from {table}")
         res[table] = cur.fetchall()
