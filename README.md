@@ -27,9 +27,13 @@ $ pip install -r requirements.txt
 |-----------|------|
 | localhost | 5432 |
 
+Then you can initialize the database with (if `python3` does not work replace it with `python`)
+```
+$ python3 init.py
+```
 Then you can compile the web-app and start the database by running the command line:
 ```
-$ python3 app.py
+$ python3 run.py
 ```
 
 # Tutorial on Web-App
