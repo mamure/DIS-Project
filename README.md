@@ -21,6 +21,8 @@ $ pip install -r requirements.txt
 ```
 
 * Make sure that your Postgres Server is configurated as following:
+
+  
 | host      | port |
 |-----------|------|
 | localhost | 5432 |
