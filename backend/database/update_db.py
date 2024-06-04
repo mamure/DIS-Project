@@ -83,12 +83,13 @@ def update_database(data):
                     """, (move,))
                 move_ids.append(cur.fetchone()[0])
 
-            for move_id in move_ids:
+            for idx, move_id in enumerate(move_ids):
                 cur.execute("""
-                    INSERT INTO game_moves (move_id, game_id)
-                    VALUES (%s, %s)
+                    INSERT INTO game_moves (move_id, move_num, game_id)
+                    VALUES (%s, %s, %s)
                     """, (
                     move_id,
+                    idx + 1,
                     game_id
                 ))
 
