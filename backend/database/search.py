@@ -4,16 +4,20 @@ import re
 
 Search = Blueprint("search", __name__)
 
-def convertToPos(symbol):
+def convertToPos(symbol : chr) -> int :
+    """
+    Converts a symbol from a pos e.g. 'c' from "c3d5" to integer 2 
+    """
     if symbol.isdigit():
         return int(symbol)-1
     return ord(symbol) - ord('a')
     
 
 def convertRawMoves(moves):
-    # Function to convert a list of rotations to actual chess moves, eg. c5e3 -> Bc5xe3
-    # Moves are always returned on this form (without 'x' if no capture)
-
+    """
+    Function to convert a list of rotations to actual chess moves, eg. c5e3 -> Bc5xe3
+    Moves are always returned on this form (without 'x' if no capture)
+    """
     pos = [["R","N","B","Q","K","B","N","R"],
            ["","","","","","","",""],
            [None,None,None,None,None,None,None,None],
@@ -26,32 +30,41 @@ def convertRawMoves(moves):
     seq = ""
 
     for move in moves:
+        # Go through all moves and calculates which piece was moved and concatenates result to a string
+        # Some moves are malformed (i.e. too long or too short), if that is the case,
+        # the whole game is excluded from conversion
         if len(move) != 4:
             return ""
-        (a,b,c,d) = (convertToPos(sym) for sym in list(move))
+        
+        (y0,x0,y1,x1) = (convertToPos(sym) for sym in list(move))
+        # Loads the move i.e. c2c4 into a tuple
+        
         # Set to ERROR if trying to move piece that does not exist on square
         # I might have missed chess rule, or the database might be wrongly typed
-        piece = "ERROR" if pos[b][a] is None else pos[b][a]
-        capture = pos[d][c]
+        piece = pos[x0][y0] or "ERROR"  
+        capture = pos[x1][y1]
         x = "" if capture is None else "x"
 
         # Castling
-        if piece == "K" and abs(a - c) == 2:
-            if pos[d][c+1] == "R":
-                pos[d][c-1] = pos[d][c+1]
-                pos[d][c+1] = None
+        if piece == "K" and abs(y0 - y1) == 2:
+            if pos[x1][y1+1] == "R":
+                pos[x1][y1-1] = pos[x1][y1+1]
+                pos[x1][y1+1] = None
             else:
-                pos[b][c+1] = pos[d][c-2]
-                pos[d][c-2] = None
+                pos[x0][y1+1] = pos[x1][y1-2]
+                pos[x1][y1-2] = None
 
         # En passant
-        elif piece == "" and capture is None and abs(a - c) == 1:
-            c_ = c + 1 if c == 2 else c - 1 
-            pos[d][c_] = None
+        elif piece == "" and capture is None and abs(y0 - y1) == 1:
+            pos[x1][y1 + 1 if y1 == 2 else y1 - 1] = None
         
+        # Promotion (always assume queen because other cases are daunting)
+        if piece == "" and y1 == 0 or y1 == 7:
+            pos[x0][y0] = "Q"
+
         # Switch pos
-        pos[d][c] = pos[b][a]
-        pos[b][a] = None
+        pos[x1][y1] = pos[x0][y0]
+        pos[x0][y0] = None
 
         # Add to string-sequence of moves (to-be regex-matched later)
         seq += ''.join([piece, move[0:2], x, move[2:4], ", "])
@@ -63,9 +76,9 @@ def search_games():
 
     query = request.args.get("query")
     query_name = request.args.get("name_query")
-    isWhite = request.args.get("playing_as")
+    white = request.args.get("playing_as")
 
-    if query is None or (query == "" and query_name == ""):
+    if not (query or query_name):
         return render_template("search.html")
 
     print(f"Searching for {query}")
@@ -80,7 +93,7 @@ def search_games():
         NATURAL JOIN game
         WHERE P.player_name LIKE '%{1}%'
         GROUP BY game_id, result;
-        """.format(isWhite, query_name)
+        """.format(white, query_name)
         )
 
     lst = []
