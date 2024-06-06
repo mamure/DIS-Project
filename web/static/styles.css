@@ -124,9 +124,9 @@ button:hover {
 
 .toggle-btn {
     background-color: #ffcc00;
+    text-align: center;
     color: #222;
     position: relative;
-    padding-right: 40px;
     background-size: 20px 20px;
     background-repeat: no-repeat;
     background-position: right center;
