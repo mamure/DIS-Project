@@ -1,4 +1,5 @@
-from flask import Blueprint, request, render_template
+import tempfile
+from flask import Blueprint, request, render_template, current_app
 from werkzeug.utils import secure_filename
 import requests
 import os
@@ -25,7 +26,8 @@ def handle_upload():
             return "Invalid file format. Please upload a PGN file."
         try:
             filename = secure_filename(uploaded_file.filename)
-            file_path = os.path.join(Upload.config["UPLOAD_FOLDER"], filename)
+
+            file_path = os.path.join(tempfile.gettempdir(), filename)
             uploaded_file.save(file_path)
             parse_pgn_file(file_path)
             return "Database updated successfully."
