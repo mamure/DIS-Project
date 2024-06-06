@@ -4,25 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess Database</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="web/static/styles.css">
+    <style>
+        .input-container {
+            display: none;
+        }
+    </style>
+    <script>
+        function toggleInput(type) {
+            document.getElementById('file-upload-container').style.display = (type === 'file') ? 'block' : 'none';
+            document.getElementById('url-upload-container').style.display = (type === 'url') ? 'block' : 'none';
+        }
+    </script>
 </head>
 <body>
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
+<<<<<<< HEAD
             <li><a href="/search">Search</a></li>
+=======
+            <li><a href="/search">Database</a></li>
+>>>>>>> 8970bff56e11a68c9aa175ef4144de4947421502
             <li><a href="/upload">Upload</a></li>
             <li><a href="/about">About</a></li>
         </ul>
     </nav>
     <h1>Upload chess game to The Chess Database</h1>
-    <form id="file-upload" action="/upload" method="post" enctype="multipart/form-data">
+    
+    <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
         <input type="hidden" name="MAX_FILE_SIZE" value="4194304" /> 
-        <input type="file" name="upload_file">
+
+        <label>
+            <input type="radio" name="upload_type" value="file" onclick="toggleInput('file')" checked> File Upload
+        </label>
+        <label>
+            <input type="radio" name="upload_type" value="url" onclick="toggleInput('url')"> URL
+        </label>
+
+        <div id="file-upload-container" class="input-container" style="display: block;">
+            <input type="file" name="upload_file">
+        </div>
+
+        <div id="url-upload-container" class="input-container">
+            <input type="url" name="upload_url" placeholder="Paste URL here" style="width: 40%;">
+        </div>
+
         <br>
         <button type="submit">Upload PGN</button>
     </form>
-    <p>Currently we are only supporting link uploads from <a href="pgnmentor.com">pgnmentor.com</a></p>
+    
+    <p>Currently we are only supporting link uploads from <a href="http://pgnmentor.com">pgnmentor.com</a></p>
     <br>
     <footer>
         <p>Created by: jlw218, hnb825, rzd350</p>
