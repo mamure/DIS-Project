@@ -1,10 +1,11 @@
-from flask import Blueprint, request, render_template
+from flask import Blueprint, json, request, render_template
 from markupsafe import Markup
 import chess.pgn
 import chess.svg
 from backend import conn
 from psycopg2._psycopg import cursor
 import io
+from backend.database.chessFunctions import get_full_game
 
 Svg = Blueprint("svg", __name__)
 
@@ -59,6 +60,8 @@ def svg_board():
         arrows=[(move2.from_square, move2.to_square)] if equiv_move else [],
         size=350,
     )
+    stats1 = get_full_game(game_id1)
+    stats2 = get_full_game(game_id2)
     return render_template(
         "svg_board.html",
         svg1=Markup(svg1),
@@ -67,8 +70,20 @@ def svg_board():
         cur_num=move_num,
         lmove=move1.uci() if move1 else None,
         rmove=move2.uci() if move2 else None,
-
+        stats1=stats1,
+        stats2=stats2,
     )
+
+
+@Svg.route("/stats")
+def get_stats():
+    game_id1 = request.args.get("game_id1")
+    game_id2 = request.args.get("game_id2")
+    if not (game_id1 and game_id2):
+        return "Both game_id1 and game_id2 needs to be given."
+    stats1 = get_full_game(game_id1)
+    stats2 = get_full_game(game_id2)
+    return render_template("stats.html", stats1=stats1, stats2=stats2)
 
 
 def get_game(game_id: int, cur: cursor):
