@@ -4,7 +4,6 @@ import requests
 import os
 import chess.pgn
 import io
-from bs4 import BeautifulSoup
 from backend.database.update_db import update_database
 
 Upload = Blueprint("upload", __name__)

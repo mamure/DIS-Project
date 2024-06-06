@@ -1,67 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Database</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        input[type="text"], input[type="hidden"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        .btn-secondary {
-            background-color: #007bff;
-        }
-        .btn-secondary:hover {
-            background-color: #0056b3;
-        }
-        .toggle-btn {
-            background-color: #ffc107;
-            color: #000;
-        }
-        .toggle-btn:hover {
-            background-color: #e0a800;
-        }
-    </style>
+    <title>DIScover Chess</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon.png') }}">
 </head>
 <body>
-    
-
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/upload">Upload</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
     <script>
         function togglePlayingAs() {
             var button = document.getElementById("toggleButton");
@@ -77,9 +31,8 @@
     </script>
 
     <div class="container">
-        <h1>Search Player Database</h1>
+        <h1>Search Player in Database</h1>
         
-        <!-- Search Form -->
         <form action="/search" method="GET">
             <input type="text" name="name_query" placeholder="Regex-pattern for name of player (empty searches forall)">
             <input type="text" name="query" placeholder="Regex-pattern of a sequence of moves">
@@ -87,8 +40,10 @@
             <button type="submit">Search</button>
         </form>
         
-        <!-- Toggle Button -->
         <button type="button" id="toggleButton" class="toggle-btn" onclick="togglePlayingAs()">Playing as White</button>
     </div>
+    <footer>
+        <p>Created by: jlw218, hnb825, rzd350</p>
+    </footer>
 </body>
 </html>
