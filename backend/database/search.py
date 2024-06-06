@@ -1,82 +1,11 @@
 from flask import Blueprint, render_template, request
 from backend import conn
+from numpy import argmax
+from backend.database.chessFunctions import convertRawMoves
+from backend.database.chessFunctions import findMostSimilarGames
 import re
 
 Search = Blueprint("search", __name__)
-
-def convertToPos(symbol : chr) -> int :
-    """
-    Converts a symbol from a pos e.g. 'c' from "c3d5" to integer 2 
-    """
-    if symbol.isdigit():
-        return int(symbol)-1
-    return ord(symbol) - ord('a')
-    
-
-def convertRawMoves(moves):
-    """
-    Function to convert a list of rotations to actual chess moves, eg. c5e3 -> Bc5xe3
-    Moves are always returned on this form (without 'x' if no capture)
-    """
-    pos = [["R","N","B","Q","K","B","N","R"],
-           ["","","","","","","",""],
-           [None,None,None,None,None,None,None,None],
-           [None,None,None,None,None,None,None,None],
-           [None,None,None,None,None,None,None,None],
-           [None,None,None,None,None,None,None,None],
-           ["","","","","","","",""],
-           ["R","N","B","Q","K","B","N","R"]]
-
-    seq = ""
-
-    for move in moves:
-        # Go through all moves and calculates which piece was moved and concatenates result to a string
-        # Some moves are malformed (i.e. too long or too short), if that is the case,
-        # the whole game is excluded from conversion
-        if len(move) != 4:
-            return ""
-        
-        (y0,x0,y1,x1) = (convertToPos(sym) for sym in list(move))
-        # Loads the move i.e. c2c4 into a tuple
-        
-        # Set to ERROR if trying to move piece that does not exist on square
-        # I might have missed chess rule, or the database might be wrongly typed
-        
-        # Maybe just remove "ERROR"-case (assuming everything is well implemented and typed in database)
-        piece = pos[x0][y0] if pos[x0][y0] != None else "ERROR"
-        capture = pos[x1][y1]
-        x = "" if capture is None else "x"
-
-        # Castling
-        if piece == "K" and abs(y0 - y1) == 2:
-            if pos[x1][y1+1] == "R":
-                pos[x1][y1-1] = pos[x1][y1+1]
-                pos[x1][y1+1] = None
-                seq += "O-O, "
-            else:
-                pos[x0][y1+1] = pos[x1][y1-2]
-                pos[x1][y1-2] = None
-                seq += "O-O-O, "
-            pos[x1][y1] = pos[x0][y0]
-            pos[x0][y0] = None
-            continue
-
-        # En passant
-        elif piece == "" and capture is None and abs(y0 - y1) == 1:
-            pos[x1][y1 + 1 if y1 == 2 else y1 - 1] = None
-        
-        # Promotion (always assume queen because other cases are daunting)
-        if piece == "" and y1 == 0 or y1 == 7:
-            pos[x0][y0] = "Q"
-
-        # Switch pos
-        pos[x1][y1] = pos[x0][y0]
-        pos[x0][y0] = None
-
-        # Add to string-sequence of moves (to-be regex-matched later)
-        seq += ''.join([piece, move[0:2], x, move[2:4], ", "])
-
-    return seq[0:-2]
 
 @Search.route('/search')
 def search_games():
@@ -84,13 +13,31 @@ def search_games():
     query = request.args.get("query")
     query_name = request.args.get("name_query") 
     color = "white" if request.args.get("playing_as") == "white" else "black" 
-
-    if not (query or query_name):
+    game_id  = request.args.get("game_id") 
+    
+    cur = conn.cursor()
+    
+    if not (query or query_name or game_id):
         return render_template("search.html")
+
+    # Searching for similar games in database based in game_id.
+    # Maybe needs to be removed
+    if game_id:
+        most_similar = findMostSimilarGames(game_id)
+        if most_similar:
+            cur.execute(f"""
+                SELECT *
+                FROM game
+                WHERE game_id = '{most_similar}';
+                """
+                )
+        else:
+            return render_template("search.html")
+        return cur.fetchall()
 
     print(f"Searching for {query}")
 
-    cur = conn.cursor()
+    # Finds all games where query_name matches player name of that color
     cur.execute(f"""
         SELECT jsonb_build_object('game_id', game_id, 'player_name', P.player_name, 'result', result, 'moves', array_agg(moves ORDER BY move_num))
         FROM player AS P
@@ -102,7 +49,9 @@ def search_games():
         GROUP BY game_id, P.player_name, result;
         """
         )
+    # ^^ Maybe use more complicated regex in postresql
 
+    # Regex-matches the sequence of moves to the games found of that player ID
     lst = []
     pattern = re.compile(query)
     for row in cur.fetchall():
