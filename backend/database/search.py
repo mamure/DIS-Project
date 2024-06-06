@@ -41,7 +41,9 @@ def convertRawMoves(moves):
         
         # Set to ERROR if trying to move piece that does not exist on square
         # I might have missed chess rule, or the database might be wrongly typed
-        piece = pos[x0][y0] or "ERROR"  
+        
+        # Maybe just remove "ERROR"-case (assuming everything is well implemented and typed in database)
+        piece = pos[x0][y0] if pos[x0][y0] != None else "ERROR"
         capture = pos[x1][y1]
         x = "" if capture is None else "x"
 
@@ -50,9 +52,14 @@ def convertRawMoves(moves):
             if pos[x1][y1+1] == "R":
                 pos[x1][y1-1] = pos[x1][y1+1]
                 pos[x1][y1+1] = None
+                seq += "O-O, "
             else:
                 pos[x0][y1+1] = pos[x1][y1-2]
                 pos[x1][y1-2] = None
+                seq += "O-O-O, "
+            pos[x1][y1] = pos[x0][y0]
+            pos[x0][y0] = None
+            continue
 
         # En passant
         elif piece == "" and capture is None and abs(y0 - y1) == 1:
@@ -69,14 +76,14 @@ def convertRawMoves(moves):
         # Add to string-sequence of moves (to-be regex-matched later)
         seq += ''.join([piece, move[0:2], x, move[2:4], ", "])
 
-    return seq
+    return seq[0:-2]
 
 @Search.route('/search')
 def search_games():
 
     query = request.args.get("query")
-    query_name = request.args.get("name_query")
-    white = request.args.get("playing_as")
+    query_name = request.args.get("name_query") 
+    color = "white" if request.args.get("playing_as") == "white" else "black" 
 
     if not (query or query_name):
         return render_template("search.html")
@@ -84,22 +91,24 @@ def search_games():
     print(f"Searching for {query}")
 
     cur = conn.cursor()
-    cur.execute("""
-        SELECT jsonb_build_object('game_id', game_id, 'result', result, 'moves', array_agg(moves ORDER BY move_num))
+    cur.execute(f"""
+        SELECT jsonb_build_object('game_id', game_id, 'player_name', P.player_name, 'result', result, 'moves', array_agg(moves ORDER BY move_num))
         FROM player AS P
-        NATURAL JOIN {0}_player
+        NATURAL JOIN {color}_player
         NATURAL JOIN game_moves
         NATURAL JOIN move
         NATURAL JOIN game
-        WHERE P.player_name LIKE '%{1}%'
-        GROUP BY game_id, result;
-        """.format(white, query_name)
+        WHERE P.player_name LIKE '%{query_name}%'
+        GROUP BY game_id, P.player_name, result;
+        """
         )
 
     lst = []
     pattern = re.compile(query)
     for row in cur.fetchall():
-        if pattern.search(convertRawMoves(row[0]['moves'])) != None:
+        move_string = convertRawMoves(row[0]['moves'])
+        if pattern.search(move_string) != None:
+            row[0]['moves'] = move_string
             lst.append(row[0])
 
     return lst
