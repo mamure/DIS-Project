@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Game Details</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='stats_styles.css') }}">
+    <title>DIScover Chess</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon.png') }}">
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/upload">Upload</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
     <div class="switch-container">
         <label class="switch">
             <div style="display: flex; position: absolute; bottom: 1%;">
@@ -48,6 +57,9 @@
             <pre id="moves"></pre>
         </div>
     </div>
+    <footer>
+        <p>Created by: jlw218, hnb825, rzd350</p>
+    </footer>
     <script>
 
         function parseGame(data) {
