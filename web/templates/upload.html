@@ -23,41 +23,42 @@
         </ul>
     </nav>
     <h1>Upload chess games to DIScover Chess</h1>
-    
-    <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="MAX_FILE_SIZE" value="4194304" /> 
 
-        <label>
-            <input type="radio" name="upload_type" value="file" onclick="toggleInput('file')" checked> File Upload
-        </label>
-        <label>
-            <input type="radio" name="upload_type" value="url" onclick="toggleInput('url')"> URL
-        </label>
+    <div class="container">
+        <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="MAX_FILE_SIZE" value="4194304" /> 
 
-        <div id="file-upload-container" class="input-container" style="display: block;">
-            <input type="file" name="upload_file">
-        </div>
+            <label>
+                <input type="radio" name="upload_type" value="file" onclick="toggleInput('file')" checked> File Upload
+            </label>
+            <label>
+                <input type="radio" name="upload_type" value="url" onclick="toggleInput('url')"> URL
+            </label>
 
-        <div id="url-upload-container" class="input-container">
-            <input type="url" name="upload_url" placeholder="Paste URL here" style="width: 40%;">
-        </div>
+            <div id="file-upload-container" class="input-container" style="display: block;">
+                <input type="file" name="upload_file">
+            </div>
 
-        <br>
-        <button type="submit">Upload PGN</button>
-    </form>
+            <div id="url-upload-container" class="input-container">
+                <input type="url" name="upload_url" placeholder="Paste URL here" style="width: 40%;">
+            </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      <div class="messages-container">
-        {% for category, message in messages %}
-          <div class="messages {{ category }}">{{ message }}</div>
-        {% endfor %}
-      </div>
-    {% endif %}
-  {% endwith %}
-  <p>Remember to use the prefix <code>https://</code> in the URL</p>
-  <p>Currently we are only supporting event link uploads from <a href="https://www.pgnmentor.com/">pgnmentor.com</a></p>
-  <br>
+            <br>
+            <button type="submit">Upload PGN</button>
+        </form>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="messages-container">
+            {% for category, message in messages %}
+              <div class="messages {{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+        {% endwith %}
+        <p>Remember to use the prefix <code>https://</code> in the URL</p>
+        <p>Currently we are only supporting event link uploads from <a href="https://www.pgnmentor.com/">pgnmentor.com</a></p>
+    </div>
   <footer>
       <p>Created by: jlw218, hnb825, rzd350</p>
   </footer>
