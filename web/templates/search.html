@@ -32,21 +32,23 @@
 
     <div class="container">
         <h1>Search Player in Database</h1>
-        
+        <button type="button" id="toggleButton" class="toggle-btn" onclick="togglePlayingAs()">Playing as White</button>
+        <br>
+        <br>
         <form action="/search" method="GET">
             <input type="text" name="name_query" placeholder="Regex-pattern for name of player (empty searches forall)">
             <input type="text" name="query" placeholder="Regex-pattern of a sequence of moves">
             <input type="hidden" name="playing_as" id="playingAsInput" value="white">
             <button type="submit">Search</button>
         </form>
-
+        <br>
+        <br>
         <!-- Search Form for game ID -->
         <form action="/search" method="GET">
-            <input type="text" name="game_id" placeholder="GAME ID">
+            <input type="text" name="game_id" placeholder="Search for most similar game to provided game ID">
             <button type="submit">Search</button>
         </form>
         
-        <button type="button" id="toggleButton" class="toggle-btn" onclick="togglePlayingAs()">Playing as White</button>
     </div>
     <footer>
         <p>Created by: jlw218, hnb825, rzd350</p>
