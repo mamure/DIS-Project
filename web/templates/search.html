@@ -1,4 +1,49 @@
-<form action="/search" method="GET">
-    <input type="text" name="query" placeholder="Enter your search query">
-    <button type="submit">Search</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIScover Chess</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon.png') }}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/upload">Upload</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    <script>
+        function togglePlayingAs() {
+            var button = document.getElementById("toggleButton");
+            var playingAsInput = document.getElementById("playingAsInput");
+            if (button.innerText === "Playing as White") {
+                button.innerText = "Playing as Black";
+                playingAsInput.value = "black";
+            } else {
+                button.innerText = "Playing as White";
+                playingAsInput.value = "white";
+            }
+        }
+    </script>
+
+    <div class="container">
+        <h1>Search Player in Database</h1>
+        
+        <form action="/search" method="GET">
+            <input type="text" name="name_query" placeholder="Regex-pattern for name of player (empty searches forall)">
+            <input type="text" name="query" placeholder="Regex-pattern of a sequence of moves">
+            <input type="hidden" name="playing_as" id="playingAsInput" value="white">
+            <button type="submit">Search</button>
+        </form>
+        
+        <button type="button" id="toggleButton" class="toggle-btn" onclick="togglePlayingAs()">Playing as White</button>
+    </div>
+    <footer>
+        <p>Created by: jlw218, hnb825, rzd350</p>
+    </footer>
+</body>
+</html>

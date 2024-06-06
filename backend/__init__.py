@@ -6,6 +6,7 @@ import os
 from backend.init.init import init_db
 
 app = Flask(__name__, template_folder=Path(__file__).parent.parent.joinpath("web/templates"), static_folder=Path(__file__).parent.parent.joinpath("web/static"))
+app.secret_key = 'DIStabase'
 
 try:
     conn = psycopg2.connect(
