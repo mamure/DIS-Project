@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Next Button</title>
+    <title>DIScover Chess</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon.png') }}">
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/upload">Upload</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
     {{ svg1 }}
     {{ svg2 }}
     <button id="resetButton">Reset</button>
@@ -13,18 +23,6 @@
     <button id="nextButton">Next</button>
     
     <br>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        .slider-container {
-            width: 300px;
-            margin: 50px auto;
-            text-align: center;
-        }
-        .value-display {
-            margin-top: 20px;
-            font-size: 20px;
-        }
-    </style>
 
     <div class="slider-container">
         <input type="range" id="slider" min="1" max="{{ max_num }}" value="{{ cur_num }}" oninput="updateValue(this.value)">
@@ -65,5 +63,8 @@
         document.getElementById('prevButton').addEventListener('click', () => updateMoveNum(-1));
         document.getElementById('resetButton').addEventListener('click', () => updateMoveNum(0, 1));
     </script>
+    <footer>
+        <p>Created by: jlw218, hnb825, rzd350</p>
+    </footer>
 </body>
 </html>
