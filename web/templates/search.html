@@ -39,6 +39,12 @@
             <input type="hidden" name="playing_as" id="playingAsInput" value="white">
             <button type="submit">Search</button>
         </form>
+
+        <!-- Search Form for game ID -->
+        <form action="/search" method="GET">
+            <input type="text" name="game_id" placeholder="GAME ID">
+            <button type="submit">Search</button>
+        </form>
         
         <button type="button" id="toggleButton" class="toggle-btn" onclick="togglePlayingAs()">Playing as White</button>
     </div>
