@@ -6,11 +6,6 @@
     <title>DIScover Chess</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon.png') }}">
-    <style>
-        .input-container {
-            display: none;
-        }
-    </style>
     <script>
         function toggleInput(type) {
             document.getElementById('file-upload-container').style.display = (type === 'file') ? 'block' : 'none';
@@ -50,11 +45,21 @@
         <br>
         <button type="submit">Upload PGN</button>
     </form>
-    
-    <p>Currently we are only supporting event link uploads from <a href="https://www.pgnmentor.com/events/">pgnmentor.com</a></p>
-    <br>
-    <footer>
-        <p>Created by: jlw218, hnb825, rzd350</p>
-    </footer>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="messages-container">
+        {% for category, message in messages %}
+          <div class="messages {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+  <p>Remember to use the prefix <code>https://</code> in the URL</p>
+  <p>Currently we are only supporting event link uploads from <a href="https://www.pgnmentor.com/">pgnmentor.com</a></p>
+  <br>
+  <footer>
+      <p>Created by: jlw218, hnb825, rzd350</p>
+  </footer>
 </body>
 </html>

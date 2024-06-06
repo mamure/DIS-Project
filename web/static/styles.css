@@ -9,6 +9,16 @@ body {
     min-height: 100vh;
 }
 
+.input-container {
+    display: none;
+}
+
+p {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 5px;
+}
+
 nav {
     background-color: #333;
     color: #fff;
@@ -124,4 +134,25 @@ button:hover {
 
 .toggle-btn:hover {
     background-color: #ffdb4d;
+}
+
+.messages {
+    margin-top: 10px;
+    margin-left: 25%;
+    margin-right: 25%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+.messages.error {
+    border-color: #e74c3c;
+    background-color: #f2dede;
+    color: #a94442;
+}
+.messages.success {
+    border-color: #2ecc71;
+    background-color: #dff0d8;
+    color: #3c763d;
 }

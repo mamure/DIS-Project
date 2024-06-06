@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template, flash, redirect, url_for
 from werkzeug.utils import secure_filename
 import requests
 import os
@@ -19,30 +19,38 @@ def handle_upload():
     
     if uploaded_file:
         if uploaded_file.filename == "":
-            return "No file selected."
+            flash("No file selected.", "error")
+            return redirect(url_for("upload.upload_form"))
         elif not uploaded_file.filename.endswith(".pgn"):
-            return "Invalid file format. Please upload a PGN file."
+            flash("Invalid file format. Please upload a PGN file.", "error")
+            return redirect(url_for("upload.upload_form"))
         try:
             filename = secure_filename(uploaded_file.filename)
             file_path = os.path.join(Upload.config["UPLOAD_FOLDER"], filename)
             uploaded_file.save(file_path)
             parse_pgn_file(file_path)
-            return "Database updated successfully."
+            flash("Database updated successfully.", "success")
+            return redirect(url_for("upload.upload_form"))
         except Exception as e:
+            flash(f"An error occurred during update: {e}", "error")
             print(f"An error occurred during update: {e}")
-            return "An error occurred during update."
+            return redirect(url_for("upload.upload_form"))
         
     elif upload_url:
         if not upload_url.startswith("https://www.pgnmentor.com/"):
-            return "Invalid URL."
+            flash("Invalid URL.", "error")
+            return redirect(url_for("upload.upload_form"))
         try:
             parse_pgn_url(upload_url)
-            return "Database updated successfully."
+            flash("Database updated successfully.", "success")
+            return redirect(url_for("upload.upload_form"))
         except Exception as e:
+            flash(f"An error occurred during update: {e}", "error")
             print(f"An error occurred during update: {e}")
-            return "An error occurred during update."
+            return redirect(url_for("upload.upload_form"))
     else:
-        return "Invalid request."
+        flash("Invalid request.", "error")
+        return redirect(url_for("upload.upload_form"))
 
 def parse_pgn_file(file_path):
     games = []
