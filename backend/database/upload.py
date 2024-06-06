@@ -1,4 +1,5 @@
-from flask import Blueprint, request, render_template, flash, redirect, url_for
+import tempfile
+from flask import Blueprint, request, render_template, current_app, flash, redirect, url_for
 from werkzeug.utils import secure_filename
 import requests
 import os
@@ -26,7 +27,8 @@ def handle_upload():
             return redirect(url_for("upload.upload_form"))
         try:
             filename = secure_filename(uploaded_file.filename)
-            file_path = os.path.join(Upload.config["UPLOAD_FOLDER"], filename)
+
+            file_path = os.path.join(tempfile.gettempdir(), filename)
             uploaded_file.save(file_path)
             parse_pgn_file(file_path)
             flash("Database updated successfully.", "success")
