@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request
 from backend import conn
-from numpy import argmax
 from backend.database.chessFunctions import convertRawMoves
 from backend.database.chessFunctions import findMostSimilarGames
 import re

@@ -156,13 +156,29 @@ button:hover {
     background-color: #dff0d8;
     color: #3c763d;
 }
+.value-display {
+    margin: -2px;
+    font-size: 20px;
+    float: center;
+}
+.svg-container {
+    width: 704px;
+    text-align: left;
+}
 
 .slider-container {
-    width: 300px;
-    margin: 50px auto;
+    width: 704px;
+    margin: 0px;
     text-align: center;
 }
-.value-display {
-    margin-top: 20px;
-    font-size: 20px;
+
+.navbutton {
+    width: 100%;
+}
+
+.slider-subcontainer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 10px;
 }
