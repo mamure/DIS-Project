@@ -83,7 +83,13 @@ def get_stats():
         return "Both game_id1 and game_id2 needs to be given."
     stats1 = get_full_game(game_id1)
     stats2 = get_full_game(game_id2)
-    return render_template("stats.html", stats1=stats1, stats2=stats2)
+    return render_template(
+        "stats.html",
+        stats1=stats1,
+        stats2=stats2,
+        gid1=game_id1,
+        gid2=game_id2,
+    )
 
 
 def get_game(game_id: int, cur: cursor):

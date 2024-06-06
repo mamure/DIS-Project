@@ -28,6 +28,8 @@ def search_games():
                 "stats.html",
                 stats1=get_full_game(game_id),
                 stats2=get_full_game(most_similar),
+                gid1=game_id,
+                gid2=most_similar,
             )
         else:
             return render_template("search.html")
