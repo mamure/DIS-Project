@@ -78,9 +78,9 @@ def svg_board():
 @Svg.route("/stats")
 def get_stats():
     game_id1 = request.args.get("game_id1")
-    game_id2 = request.args.get("game_id2")
-    if not (game_id1 and game_id2):
-        return "Both game_id1 and game_id2 needs to be given."
+    game_id2 = request.args.get("game_id2", game_id1)
+    if not game_id1:
+        return "At least game_id1 needs to be given."
     stats1 = get_full_game(game_id1)
     stats2 = get_full_game(game_id2)
     return render_template(
