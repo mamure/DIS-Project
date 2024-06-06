@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Database</title>
-    <link rel="stylesheet" href="web/static/styles.css">
-    <style>
-        .input-container {
-            display: none;
-        }
-    </style>
+    <title>DIScover Chess</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon.png') }}">
     <script>
         function toggleInput(type) {
             document.getElementById('file-upload-container').style.display = (type === 'file') ? 'block' : 'none';
@@ -21,16 +17,12 @@
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-<<<<<<< HEAD
             <li><a href="/search">Search</a></li>
-=======
-            <li><a href="/search">Database</a></li>
->>>>>>> 8970bff56e11a68c9aa175ef4144de4947421502
             <li><a href="/upload">Upload</a></li>
             <li><a href="/about">About</a></li>
         </ul>
     </nav>
-    <h1>Upload chess game to The Chess Database</h1>
+    <h1>Upload chess games to DIScover Chess</h1>
     
     <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
         <input type="hidden" name="MAX_FILE_SIZE" value="4194304" /> 
@@ -53,11 +45,21 @@
         <br>
         <button type="submit">Upload PGN</button>
     </form>
-    
-    <p>Currently we are only supporting link uploads from <a href="http://pgnmentor.com">pgnmentor.com</a></p>
-    <br>
-    <footer>
-        <p>Created by: jlw218, hnb825, rzd350</p>
-    </footer>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="messages-container">
+        {% for category, message in messages %}
+          <div class="messages {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+  <p>Remember to use the prefix <code>https://</code> in the URL</p>
+  <p>Currently we are only supporting event link uploads from <a href="https://www.pgnmentor.com/">pgnmentor.com</a></p>
+  <br>
+  <footer>
+      <p>Created by: jlw218, hnb825, rzd350</p>
+  </footer>
 </body>
 </html>
