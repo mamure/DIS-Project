@@ -29,7 +29,9 @@ except:
 from backend.database.index import Index
 from backend.database.search import Search
 from backend.database.upload import Upload
+from backend.database.svg_board import Svg
 
 app.register_blueprint(Index)
 app.register_blueprint(Search)
 app.register_blueprint(Upload)
+app.register_blueprint(Svg)
