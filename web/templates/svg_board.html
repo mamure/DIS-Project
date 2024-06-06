@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Button</title>
+</head>
+<body>
+    {{ svg1 }}
+    {{ svg2 }}
+    <button id="resetButton">Reset</button>
+    <button id="prevButton">Prev</button>
+    <button id="nextButton">Next</button>
+    
+    <br>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .slider-container {
+            width: 300px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        .value-display {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+
+    <div class="slider-container">
+        <input type="range" id="slider" min="1" max="{{ max_num }}" value="{{ cur_num }}" oninput="updateValue(this.value)">
+        <div class="value-display" id="sliderValue">{{ cur_num }}</div>
+    </div>
+
+    <script>
+        // Function to get query parameter by name
+        function getQueryParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Function to update the URL with the incremented move_num parameter
+        function updateMoveNum(amnt, setval) {
+            let moveNum = parseInt(getQueryParameter('move_num'));
+            if (isNaN(moveNum)) {
+                moveNum = 1;
+            }
+            if (amnt == 0) {
+                moveNum = setval;
+            } else {
+                moveNum += amnt;
+            }
+            moveNum = Math.min(Math.max(moveNum, 1), {{ max_num }});
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.set('move_num', moveNum);
+            window.location.href = newUrl.toString();
+        }
+
+        function updateValue(val) {
+            document.getElementById('sliderValue').textContent = val;
+            updateMoveNum(0, val)
+        }
+
+        // Add event listener to the button
+        document.getElementById('nextButton').addEventListener('click', () => updateMoveNum(1));
+        document.getElementById('prevButton').addEventListener('click', () => updateMoveNum(-1));
+        document.getElementById('resetButton').addEventListener('click', () => updateMoveNum(0, 1));
+    </script>
+</body>
+</html>
