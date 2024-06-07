@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIScover Chess</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon.png') }}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/upload">Upload</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+    <div class="switch-container">
+        <label class="switch">
+            <div style="display: flex; position: absolute; bottom: 1%;">
+                <div style="position: relative; right: 100%; flex: 1;">Game1 stats</div>
+                <div style="position: relative; left: 100%; flex: 1;">Game2 stats</div>
+            </div>
+            <input type="checkbox" id="gameSwitch">
+            <span class="slider round"></span>
+        </label>
+    </div>
+    <div id="game-details">
+        <h1>Chess Game Details</h1>
+        <div class="game-meta">
+            <button style="left: 50%; top: 50%;" onclick="window.location.href='/svg?game_id1={{ gid1 }}&game_id2={{ gid2 }}'">Compare games</button>
+            <p><strong>Game ID:</strong> <span id="game-id"></span></p>
+            <p><strong>Game Date:</strong> <span id="game-date"></span></p>
+            <p><strong>Event Name:</strong> <span id="event-name"></span></p>
+            <p><strong>Event Date:</strong> <span id="event-date"></span></p>
+            <p><strong>Result:</strong> <span id="result"></span></p>
+        </div>
+        <div class="players">
+            <div class="player" id="white-player">
+                <h2>White Player</h2>
+                <p><strong>Name:</strong> <span id="white-player-name"></span></p>
+                <p><strong>Title:</strong> <span id="white-player-title"></span></p>
+                <p><strong>ELO:</strong> <span id="white-player-elo"></span></p>
+                <p><strong>FIDE ID:</strong> <span id="white-player-fide-id"></span></p>
+            </div>
+            <div class="player" id="black-player">
+                <h2>Black Player</h2>
+                <p><strong>Name:</strong> <span id="black-player-name"></span></p>
+                <p><strong>Title:</strong> <span id="black-player-title"></span></p>
+                <p><strong>ELO:</strong> <span id="black-player-elo"></span></p>
+                <p><strong>FIDE ID:</strong> <span id="black-player-fide-id"></span></p>
+            </div>
+        </div>
+        <div class="moves">
+            <h2>Moves</h2>
+            <pre id="moves"></pre>
+        </div>
+    </div>
+    <footer>
+        <p>Created by: jlw218, hnb825, rzd350</p>
+    </footer>
+    <script>
+
+        function parseGame(data) {
+            document.getElementById('game-id').textContent = data.game_id;
+            document.getElementById('game-date').textContent = data.game_date;
+            document.getElementById('event-name').textContent = data.event_name;
+            document.getElementById('event-date').textContent = data.event_date;
+            document.getElementById('result').textContent = data.result;
+
+            document.getElementById('white-player-name').textContent = data.white_player.player_name;
+            document.getElementById('white-player-title').textContent = data.white_player.title;
+            document.getElementById('white-player-elo').textContent = data.white_player.elo || 'No data';
+            document.getElementById('white-player-fide-id').textContent = data.white_player.fide_id;
+
+            document.getElementById('black-player-name').textContent = data.black_player.player_name;
+            document.getElementById('black-player-title').textContent = data.black_player.title;
+            document.getElementById('black-player-elo').textContent = data.black_player.elo || 'No data';
+            document.getElementById('black-player-fide-id').textContent = data.black_player.fide_id;
+
+            document.getElementById('moves').textContent = data.moves;
+        }
+
+        json_stats = {{ stats1 | tojson }};
+        document.getElementById('gameSwitch').addEventListener('change', function() {
+            if (this.checked) {
+                json_stats = {{ stats2 | tojson }};
+            } else {
+                json_stats = {{ stats1 | tojson }};
+            }
+            document.addEventListener('DOMContentLoaded', parseGame(json_stats));
+        });
+        document.addEventListener('DOMContentLoaded', parseGame(json_stats));
+
+
+    </script>
+</body>
+</html>

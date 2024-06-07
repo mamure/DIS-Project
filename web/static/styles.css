@@ -182,3 +182,139 @@ button:hover {
     align-items: center;
     margin-bottom: 10px;
 }
+
+
+.full-container {
+    margin: 0;
+    display: flex;
+    height: 100%;
+}
+
+.left-container {
+    width: 70vw*90%;
+    transform: scale(90%);
+}
+
+.right-container {
+    flex: 1;
+    transform: scale(80%);
+    position: relative;
+}
+
+#game-details {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.game-meta, .players, .moves {
+    margin-bottom: 20px;
+}
+
+.game-meta p, .player p {
+    margin: 5px 0;
+}
+
+.players {
+    display: flex;
+    justify-content: space-between;
+}
+
+.player {
+    width: 48%;
+}
+
+.player h2 {
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+pre {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.stats-container {
+    width: 500px;
+    /* text-align: right; */
+    position: absolute;
+    z-index: 3000;
+    right: 10px;
+    top: 60px;
+}
+
+.switch-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    text-align: center;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 120px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(86px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.switch-label {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.switch-label span {
+    width: 50%;
+    text-align: center;
+}
