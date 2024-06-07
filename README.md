@@ -42,8 +42,10 @@ The web-app is built up by some underlying sites, each with different implementa
 ## _Home_
 The home site serves as the navigational hub for the other sites.
 
-## _Database_
-Here you can search in the database. The database contains entries from the start of the web-app that you can search through. Additionally, you can search after you have uploaded your games. You can search based on bla, bla, bla.
+## _Search_
+Here, it is possible to search the database for games using the name of a player and a sequence of moves in the given players game. Both search-requirements uses regex-mathing (for player-names: in postresql; for sequence of moves, with Python module 're'). This means that it is possible to search through the database for all players, if no player-name is supplied, since the empty string regex-matches all player names in this context.
+
+It is also possible to search for similar games to a given game ID using the second search button. This uses a LCS-solver module in Python to find how similar games are. A single game is returned (if the database has more than one game in the collection).
 
 ## _Upload_
 Here you can upload your own chess games to the DIScover chess database. The app supports either Portable Game Notation files (.pgn) or a link to a file from the website [PGN Mentor](https://www.pgnmentor.com/files.html).
@@ -52,8 +54,3 @@ If you have a [chess.com](https://www.chess.com) account, you can download a PGN
 
 ## _About_
 This site contains a small section with information about this project.
-
-## _Search_
-Here, it is possible to search the database for games using the name of a player and a sequence of moves in the given players game. Both search-requirements uses regex-mathing (for player-names: in postresql; for sequence of moves, with Python module 're'). This means that it is possible to search through the database for all players, if no player-name is supplied, since the empty string regex-matches all player names in this context.
-
-It is also possible to search for similar games to a given game ID using the second search button. This uses a LCS-solver module in Python to find how similar games are. A single game is returned (if the database has more than one game in the collection).
