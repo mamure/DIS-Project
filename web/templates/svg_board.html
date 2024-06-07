@@ -16,20 +16,35 @@
             <li><a href="/about">About</a></li>
         </ul>
     </nav>
-    {{ svg1 }}
-    {{ svg2 }}
-    <button id="resetButton">Reset</button>
-    <button id="prevButton">Prev</button>
-    <button id="nextButton">Next</button>
-    
-    <br>
-
+    <div class="svg-container">
+        {{ svg1 }}
+        {{ svg2 }}
+    </div>
+        
     <div class="slider-container">
-        <input type="range" id="slider" min="1" max="{{ max_num }}" value="{{ cur_num }}" oninput="updateValue(this.value)">
-        <div class="value-display" id="sliderValue">{{ cur_num }}</div>
+        <input type="range" id="slider" min="1" max="{{ max_num }}" value="{{ cur_num }}" oninput="updateValue(this.value)" style="width: 100%">
+        <div class="slider-subcontainer">
+            <div class="value-display" id="leftMove">{{ lmove }}</div>
+            <div class="value-display" id="sliderValue">{{ cur_num }}</div>
+            <div class="value-display" id="rightMove">{{ rmove }}</div>
+        </div>
+        <button class="navbutton" id="nextButton">Next</button>
+        <button class="navbutton" id="prevButton">Prev</button>
+        <button class="navbutton" id="resetButton">Reset</button>
     </div>
 
+    <br>
+
     <script>
+        var svgContainer = document.querySelector('.svg-container');
+        var sliderContainer = document.querySelector('.slider-container');
+        console.log(getComputedStyle(svgContainer).width);
+        console.log(getComputedStyle(sliderContainer).width);
+        
+        if(svgContainer && sliderContainer) {
+            sliderContainer.style.width = getComputedStyle(svgContainer).width;
+        }
+
         // Function to get query parameter by name
         function getQueryParameter(name) {
             const urlParams = new URLSearchParams(window.location.search);

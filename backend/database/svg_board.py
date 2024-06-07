@@ -1,5 +1,4 @@
-import tempfile
-from flask import Blueprint, request, render_template, current_app
+from flask import Blueprint, request, render_template
 from markupsafe import Markup
 import chess.pgn
 import chess.svg
@@ -9,7 +8,8 @@ import io
 
 Svg = Blueprint("svg", __name__)
 
-@Svg.route('/svg')
+
+@Svg.route("/svg")
 def svg_board():
     move_num = max(int(request.args.get("move_num", 1)), 1)
     game_id1 = request.args.get("game_id1")
@@ -48,20 +48,32 @@ def svg_board():
     svg1 = chess.svg.board(
         board1,
         flipped=not is_white,
-        lastmove=move1 if equiv_move else None,
+        lastmove=move1,
+        arrows=[(move1.from_square, move1.to_square)] if equiv_move else [],
         size=350,
     )
     svg2 = chess.svg.board(
         board2,
         flipped=not is_white,
-        lastmove=move2 if equiv_move else None,
+        lastmove=move2,
+        arrows=[(move2.from_square, move2.to_square)] if equiv_move else [],
         size=350,
     )
-    return render_template("svg_board.html", svg1=Markup(svg1),svg2=Markup(svg2), max_num=max(amnt_moves1, amnt_moves2), cur_num=move_num)
+    return render_template(
+        "svg_board.html",
+        svg1=Markup(svg1),
+        svg2=Markup(svg2),
+        max_num=max(amnt_moves1, amnt_moves2),
+        cur_num=move_num,
+        lmove=move1.uci() if move1 else None,
+        rmove=move2.uci() if move2 else None,
+
+    )
 
 
 def get_game(game_id: int, cur: cursor):
-    cur.execute("""
+    cur.execute(
+        """
         SELECT
             to_jsonb(game)
             ||
@@ -75,9 +87,13 @@ def get_game(game_id: int, cur: cursor):
         WHERE game.game_id = %s
         group by game.game_id
         """,
-        (game_id,)
-        )
+        (game_id,),
+    )
     game = cur.fetchone()
     if not game:
         raise ValueError(f"Game with game_id {game_id} not found.")
-    return chess.pgn.read_game(io.StringIO(" ".join([f"{idx+1}.{m}" for idx, m in enumerate(game[0]["moves"])]))), len(game[0]["moves"])
+    return chess.pgn.read_game(
+        io.StringIO(
+            " ".join([f"{idx+1}.{m}" for idx, m in enumerate(game[0]["moves"])])
+        )
+    ), len(game[0]["moves"])
