@@ -52,9 +52,9 @@ def update_database(data):
                 VALUES (%s, %s, %s)
                 RETURNING game_id
                 """, (
-                entry["Result"],
+                entry["Result"][0:7],
                 entry["Date"],
-                entry["ECO"]
+                entry["ECO"][0:3]
             ))
             game_id = cur.fetchone()[0]
 
