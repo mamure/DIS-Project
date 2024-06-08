@@ -17,7 +17,7 @@
 Run the code below in your terminal to install the necessary modules to compile the web-app.
 
 ```
-$ pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 * Make sure that your Postgres Server is configurated as following:
@@ -29,11 +29,11 @@ $ pip install -r requirements.txt
 
 Then you can initialize the database with (if `python3` does not work replace it with `python`)
 ```
-$ python3 init.py
+python3 init.py
 ```
 Then you can compile the web-app and start the database by running the command line:
 ```
-$ python3 run.py
+python3 run.py
 ```
 
 # Tutorial on Web-App
