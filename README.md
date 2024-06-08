@@ -57,3 +57,6 @@ This site contains a small section with information about this project.
 Here, it is possible to search the database for games using the name of a player and a sequence of moves in the given players game. Both search-requirements uses regex-mathing (for player-names: in postresql; for sequence of moves, with Python module 're'). This means that it is possible to search through the database for all players, if no player-name is supplied, since the empty string regex-matches all player names in this context.
 
 It is also possible to search for similar games to a given game ID using the second search button. This uses a LCS-solver module in Python to find how similar games are. A single game is returned (if the database has more than one game in the collection).
+
+### _Comparing games_
+After you have searched for a `gameID` in the database, you can compare the two games that are most similar. The games are compared via their opening, and you can see their stats such as where, when, and who played the match. Additionally, you can see how the two games unfolded with their moves. There is currently no way to look up a specific game's `gameID` before searching for similar games.
