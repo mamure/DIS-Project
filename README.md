@@ -9,7 +9,7 @@ Run the code below in your terminal to install the necessary modules to compile 
 pip install -r requirements.txt
 ```
 
-* Make sure that your Postgres Server is configurated as following:
+* Make sure that your Postgres Server is configurated as following and turned on:
 
   
 | host      | port |
