@@ -18,6 +18,15 @@ pip install -r requirements.txt
 |-----------|------|
 | localhost | 5432 |
 
+Run
+
+```
+cp .env.example .env
+```
+
+Insert your username and password to postgres in `.env`
+
+
 Then you can initialize the database with (if `python3` does not work replace it with `python`):
 
 ```
