@@ -8,6 +8,7 @@ from backend.database.upload import parse_pgn_url
 load_dotenv()
 
 def create_database():
+    conn = None
     try:
         conn = psycopg2.connect(
             host="localhost",
