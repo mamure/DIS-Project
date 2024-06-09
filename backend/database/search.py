@@ -22,7 +22,7 @@ def search_games():
     # Searching for similar games in database based in game_id.
     # Maybe needs to be removed
     if game_id:
-        if not isinstance(game_id, int):
+        if not game_id.isdigit():
             print(f"Game ID '{game_id}' is malformed (must be integer)")
             return render_template("search.html")
 

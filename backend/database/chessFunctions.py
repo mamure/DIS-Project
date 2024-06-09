@@ -136,6 +136,7 @@ def findMostSimilarGames(game_id: int) -> int:
     )
 
     # If there exists no such game, that is, Index is out of bounds, return 0
+    q = cur.fetchall()
     if not q[0][0]['moves']:
         return 0
 
