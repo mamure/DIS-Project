@@ -16,25 +16,77 @@
             <li><a href="/about">About</a></li>
         </ul>
     </nav>
-    <div class="svg-container">
-        {{ svg1 }}
-        {{ svg2 }}
-    </div>
-        
-    <div class="slider-container">
-        <input type="range" id="slider" min="1" max="{{ max_num }}" value="{{ cur_num }}" oninput="updateValue(this.value)" style="width: 100%">
-        <div class="slider-subcontainer">
-            <div class="value-display" id="leftMove">{{ lmove }}</div>
-            <div class="value-display" id="sliderValue">{{ cur_num }}</div>
-            <div class="value-display" id="rightMove">{{ rmove }}</div>
+
+
+    <div class="container">
+
+        <div class="left-container">
+
+            <div class="svg-container">
+                {{ svg1 }}
+                {{ svg2 }}
+            </div>
+            
+            <div class="slider-container">
+                <input type="range" id="slider" min="1" max="{{ max_num }}" value="{{ cur_num }}" oninput="updateValue(this.value)" style="width: 100%">
+                <div class="slider-subcontainer">
+                    <div class="value-display" id="leftMove">{{ lmove }}</div>
+                    <div class="value-display" id="sliderValue">{{ cur_num }}</div>
+                    <div class="value-display" id="rightMove">{{ rmove }}</div>
+                </div>
+                <button class="navbutton" id="nextButton">Next</button>
+                <button class="navbutton" id="prevButton">Prev</button>
+                <button class="navbutton" id="resetButton">Reset</button>
+            </div>
+            
+            <br>
+            <div class="stats-container">
+                
+            </div>
         </div>
-        <button class="navbutton" id="nextButton">Next</button>
-        <button class="navbutton" id="prevButton">Prev</button>
-        <button class="navbutton" id="resetButton">Reset</button>
+        <div class="right-container">
+            <div class="switch-container">
+                <label class="switch">
+                    <div style="display: flex; position: absolute; bottom: 1%;">
+                        <div style="position: relative; right: 100%; flex: 1;">Game1 stats</div>
+                        <div style="position: relative; left: 100%; flex: 1;">Game2 stats</div>
+                    </div>
+                    <input type="checkbox" id="gameSwitch">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div id="game-details">
+                <h1>Chess Game Details</h1>
+                <div class="game-meta">
+                    <p><strong>Game ID:</strong> <span id="game-id"></span></p>
+                    <p><strong>Game Date:</strong> <span id="game-date"></span></p>
+                    <p><strong>Event Name:</strong> <span id="event-name"></span></p>
+                    <p><strong>Event Date:</strong> <span id="event-date"></span></p>
+                    <p><strong>Result:</strong> <span id="result"></span></p>
+                </div>
+                <div class="players">
+                    <div class="player" id="white-player">
+                        <h2>White Player</h2>
+                        <p><strong>Name:</strong> <span id="white-player-name"></span></p>
+                        <p><strong>Title:</strong> <span id="white-player-title"></span></p>
+                        <p><strong>ELO:</strong> <span id="white-player-elo"></span></p>
+                        <p><strong>FIDE ID:</strong> <span id="white-player-fide-id"></span></p>
+                    </div>
+                    <div class="player" id="black-player">
+                        <h2>Black Player</h2>
+                        <p><strong>Name:</strong> <span id="black-player-name"></span></p>
+                        <p><strong>Title:</strong> <span id="black-player-title"></span></p>
+                        <p><strong>ELO:</strong> <span id="black-player-elo"></span></p>
+                        <p><strong>FIDE ID:</strong> <span id="black-player-fide-id"></span></p>
+                    </div>
+                </div>
+                <div class="moves">
+                    <h2>Moves</h2>
+                    <pre id="moves"></pre>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <br>
-
     <script>
         var svgContainer = document.querySelector('.svg-container');
         var sliderContainer = document.querySelector('.slider-container');
@@ -73,10 +125,43 @@
             updateMoveNum(0, val)
         }
 
+        function parseGame(data) {
+            document.getElementById('game-id').textContent = data.game_id;
+            document.getElementById('game-date').textContent = data.game_date;
+            document.getElementById('event-name').textContent = data.event_name;
+            document.getElementById('event-date').textContent = data.event_date;
+            document.getElementById('result').textContent = data.result;
+
+            document.getElementById('white-player-name').textContent = data.white_player.player_name;
+            document.getElementById('white-player-title').textContent = data.white_player.title;
+            document.getElementById('white-player-elo').textContent = data.white_player.elo || 'No data';
+            document.getElementById('white-player-fide-id').textContent = data.white_player.fide_id;
+
+            document.getElementById('black-player-name').textContent = data.black_player.player_name;
+            document.getElementById('black-player-title').textContent = data.black_player.title;
+            document.getElementById('black-player-elo').textContent = data.black_player.elo || 'No data';
+            document.getElementById('black-player-fide-id').textContent = data.black_player.fide_id;
+
+            document.getElementById('moves').textContent = data.moves;
+        }
+
         // Add event listener to the button
         document.getElementById('nextButton').addEventListener('click', () => updateMoveNum(1));
         document.getElementById('prevButton').addEventListener('click', () => updateMoveNum(-1));
         document.getElementById('resetButton').addEventListener('click', () => updateMoveNum(0, 1));
+
+        
+        json_stats = {{ stats1 | tojson }};
+        document.getElementById('gameSwitch').addEventListener('change', function() {
+            if (this.checked) {
+                json_stats = {{ stats2 | tojson }};
+            } else {
+                json_stats = {{ stats1 | tojson }};
+            }
+            document.addEventListener('DOMContentLoaded', parseGame(json_stats));
+        });
+        document.addEventListener('DOMContentLoaded', parseGame(json_stats));
+
     </script>
     <footer>
         <p>Created by: jlw218, hnb825, rzd350</p>
