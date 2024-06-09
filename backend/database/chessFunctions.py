@@ -136,10 +136,10 @@ def findMostSimilarGames(game_id: int) -> int:
     )
 
     # If there exists no such game, that is, Index is out of bounds, return 0
-    if cur == []:
+    if not q[0][0]['moves']:
         return 0
 
-    comp_game = convertRawMoves(cur.fetchall()[0][0]["moves"])
+    comp_game = convertRawMoves(q[0][0]["moves"])
 
     # Finds all games not equal to ID
     cur.execute(

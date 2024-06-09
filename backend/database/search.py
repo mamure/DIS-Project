@@ -22,6 +22,10 @@ def search_games():
     # Searching for similar games in database based in game_id.
     # Maybe needs to be removed
     if game_id:
+        if not isinstance(game_id, int):
+            print(f"Game ID '{game_id}' is malformed (must be integer)")
+            return render_template("search.html")
+
         most_similar = findMostSimilarGames(game_id)
         if most_similar:
             return render_template(
@@ -32,6 +36,7 @@ def search_games():
                 gid2=most_similar,
             )
         else:
+            print(f"Game ID '{game_id}' not found in database")
             return render_template("search.html")
 
     print(f"Searching for {query}")
