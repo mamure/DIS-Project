@@ -54,9 +54,11 @@ http://127.0.0.1:5000/search
 To access the home page, the endpoint path is just `/`.
 
 ## _Search_
-Here, it is possible to search the database for games using the name of a player and a sequence of moves in the given player's game. Both search requirements use regex matching (for player names in `PostgreSQL`; for sequence of moves, with the Python module `re`). This means that it is possible to search through the database for all players if no player name is supplied since the empty string regex matches all player names in this context.
+Here, it is possible to search the database for games using the name of a player and a sequence of moves in the given player's game. Both search requirements use regex matching (for player names in `PostgreSQL`; for sequence of moves (such as "e2e4, e7e5, Ng1f3"), with the Python module `re`). This means that it is possible to search through the database for all players if no player name is supplied since the empty string regex matches all player names in this context.
 
-It is also possible to search for similar games to a given game ID using the second search button. This uses an LCS-solver module in Python to find how similar games are. A single game is returned (if the database has more than one game in the collection).
+It is also possible to search for similar games to a given game ID using the second search button. This uses an LCS-solver module in Python to find how similar games are. A single game is returned (if the database has more than one game in the collection). The ID's are simple numbers (1, 2, ..., 20, ...) assigned by the Python application.
+
+Note that the database fetches random information from pgnmentor when initializing the database. As such, a previously found game might not exist after re-initializing the database.
 
 ## _Upload_
 Here, you can upload your own chess games to the DIScover Chess database. The app supports either Portable Game Notation files (.pgn) or a link to a file from the website [PGN Mentor](https://www.pgnmentor.com/files.html).
